@@ -1,0 +1,123 @@
+name: Complete CI
+
+on:
+  workflow_dispatch:  # Manual trigger
+  push:
+    branches: [main, dev]
+    paths-ignore:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/backend-*.yml'
+      - '.github/workflows/frontend-*.yml'
+  pull_request:
+    branches: [main, dev]
+    paths-ignore:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/backend-*.yml'
+      - '.github/workflows/frontend-*.yml'
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install uv
+      run: |
+        python -m pip install --upgrade pip
+        pip install uv
+    
+    - name: Install dependencies
+      working-directory: ./backend
+      run: |
+        uv sync --extra dev
+    
+    - name: Run tests with coverage
+      working-directory: ./backend
+      run: |
+        uv run pytest --cov=core --cov=tests --cov-report=xml --cov-report=term-missing
+    
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: leandrofahur/ask-wise
+        directory: ./backend
+
+  backend-lint:
+    name: Backend Linting
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install uv
+      run: |
+        python -m pip install --upgrade pip
+        pip install uv
+    
+    - name: Install dependencies
+      working-directory: ./backend
+      run: |
+        uv sync --extra dev
+    
+    - name: Run Black formatting check
+      working-directory: ./backend
+      run: |
+        uv run black --check .
+    
+    - name: Run Ruff linting
+      working-directory: ./backend
+      run: |
+        uv run ruff check .
+
+  backend-security:
+    name: Backend Security
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit safety
+    
+    - name: Run Bandit security scan
+      working-directory: ./backend
+      run: |
+        bandit -r . -f json -o bandit-report.json || true
+    
+    - name: Run Safety dependency check
+      working-directory: ./backend
+      run: |
+        safety check --json --output safety-report.json || true
+    
+    - name: Upload security reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-security-reports
+        path: |
+          backend/bandit-report.json
+          backend/safety-report.json 
