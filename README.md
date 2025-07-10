@@ -146,20 +146,16 @@ git push origin feature/ai-tutor-endpoint
 ### Run Linting and Formatting
 ```bash
 # From repository root (recommended)
-make help          # Show all available commands
-make install       # Install dependencies
-make test          # Run all tests
-make lint          # Run linting checks
-make format        # Format code with Black
-make coverage      # Run tests with coverage
-make ci            # Run complete CI pipeline
-make clean         # Clean generated files
+make help               # Show all available commands
+make install            # Install dependencies
+make test               # Run all tests
+make lint               # Run linting checks
+make format             # Format code with Black
+make coverage           # Run tests with coverage
+make ci                 # Run complete CI pipeline
+make clean              # Clean generated files
 
-# Or from backend directory
-cd backend
-make test
-make lint
-make format
-make coverage
-make ci
+# Server commands
+make server-install     # Install server dependencies
+make server             # Start backend API server
 ```

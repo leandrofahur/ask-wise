@@ -18,11 +18,19 @@ help:
 	@echo "Maintenance:"
 	@echo "  clean       Clean generated files"
 	@echo ""
+	@echo "Server:"
+	@echo "  server      Start backend server"
+	@echo "  server-install Install server dependencies"
+	@echo ""
+	@echo "Frontend:"
+	@echo "  client Start frontend client"
+	@echo "  client-install Install frontend dependencies"
+	@echo ""
 
 # Install dependencies
 install:
 	@echo "Installing backend dependencies..."
-	cd backend && uv sync --extra dev
+	cd backend && uv sync --extra dev --extra server
 
 # Run all tests
 test:
@@ -74,4 +82,22 @@ backend-coverage:
 
 backend-ci:
 	@echo "Running backend CI..."
-	cd backend && make ci 
+	cd backend && make ci
+
+# Server commands
+server:
+	@echo "Starting backend server..."
+	cd backend && source .venv/bin/activate && uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+server-install:
+	@echo "Installing server dependencies..."
+	cd backend && uv sync --extra dev --extra server 
+
+# Frontend commands
+client:
+	@echo "Starting frontend server..."
+	cd frontend && pnpm dev
+
+client-install:
+	@echo "Installing frontend dependencies..."
+	cd frontend && pnpm install

@@ -50,6 +50,13 @@ dev = [
     "black",
     "pytest",
     "pytest-cov",
+    "pytest-asyncio",
+]
+
+server = [
+    "fastapi",
+    "uvicorn[standard]",    
+    "httpx",
 ]
 
 [tool.pytest.ini_options]
