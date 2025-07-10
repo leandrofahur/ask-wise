@@ -1,47 +1,48 @@
 # G := (x_0, X, X_marked, E, f)
 
-# class FSM:
-#     def __init__(self):
-#         pass
 
-#     def set_initial_state(self):
-#         pass
+class FSM:
+    def __init__(
+        self, initial_state, states, marked_states, events, transition_function
+    ):
+        self.initial_state = initial_state
+        self.states = states
+        self.marked_states = marked_states
+        self.events = events
+        self.transition_function = transition_function
 
-#     def set_states(self):
-#         pass
+    def set_initial_state(self, initial_state):
+        self.initial_state = initial_state
 
-#     def set_marked_states(self):
-#         pass
+    def get_initial_state(self):
+        return self.initial_state
 
-#     def set_events(self):
-#         pass
+    def set_states(self, states):
+        self.states = states
 
-#     def set_transition_function(self):
-#         pass
+    def get_states(self):
+        return self.states
 
-#     def run(self):
-#         pass
+    def set_marked_states(self, marked_states):
+        self.marked_states = marked_states
 
+    def get_marked_states(self):
+        return self.marked_states
 
-# x_0 = "OFF"
-# X = ["OFF", "ON", "ERROR"]
-# X_marked = ["OFF", "ERROR"]
+    def set_events(self, events):
+        self.events = events
 
-# E = ["TURN_ON", "TURN_OFF", "ERROR"]
+    def get_events(self):
+        return self.events
 
-# f = {
-#     ("OFF", "TURN_ON"): "ON",
-#     ("ON", "TURN_OFF"): "OFF",
-#     ("ON", "ERROR"): "ERROR",
-#     ("OFF", "ERROR"): "ERROR",
-#     ("ERROR", "TURN_ON"): "ERROR",
-#     ("ERROR", "TURN_OFF"): "ERROR",
-#     ("ERROR", "ERROR"): "ERROR",
-# }
+    def set_transition_function(self, transition_function):
+        self.transition_function = transition_function
 
-# print(f[("OFF", "TURN_ON")])
-
-# current_state = x_0
-# for event in E:
-#     print(f"({current_state} x {event}) -> {f[(current_state, event)]}")
-#     current_state = f[(current_state, event)]
+    def run(self):
+        current_state = self.initial_state
+        for event in self.events:
+            print(
+                f"({current_state} x {event}) -> {self.transition_function[(current_state, event)]}"
+            )
+            current_state = self.transition_function[(current_state, event)]
+        return current_state

@@ -73,19 +73,6 @@ def test_testing_framework():
     assert True, "Pytest is working correctly"
 
 
-def test_placeholder_for_fsm_tests():
-    """
-    Placeholder test for future FSM functionality.
-    """
-    # TODO: Replace with actual FSM tests when you implement:
-    # - State machine creation
-    # - State transitions
-    # - Agentic control logic
-    # - Evolutionary mechanisms
-
-    assert True, "FSM tests will be implemented as features are developed"
-
-
 # Trigger CI/CD workflow with coverage upload
 def test_ci_cd_coverage_trigger():
     """
