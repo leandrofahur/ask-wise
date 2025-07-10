@@ -21,17 +21,6 @@ AskWise combines finite state machine simulation with retrieval-augmented AI usi
 ## Architecture
 ```bash
 ask-wise/
-├── backend/                   # FastAPI backend
-│   ├── app/
-│   │   ├── main.py
-│   │   ├── api/               # REST endpoints
-│   │   ├── fsm/               # FSM engine logic
-│   │   ├── rag/               # LangChain PDF ingestion + chat
-│   │   └── core/              # Configs, logging
-│   ├── tests/                 # Pytest-based test suite
-│   ├── Makefile               # Dev CLI commands
-│   └── pyproject.toml
-├── frontend/ (coming soon)    # Next.js FSM visualizer
 └── README.md
 ```
 
@@ -158,4 +147,117 @@ make clean              # Clean generated files
 # Server commands
 make server-install     # Install server dependencies
 make server             # Start backend API server
+
+# Clien commands
+# Frontend (Next.js)
+make client-install     # Install frontend dependencies (pnpm)
+make client             # Start frontend dev server (Next.js)
 ```
+
+---
+
+## **1. Backend: FastAPI on Railway**
+
+### **A. Prepare Your Backend for Railway**
+1. **Ensure you have a `requirements.txt`** in `backend/`:
+   ```sh
+   cd backend
+   pip freeze > requirements.txt
+   ```
+2. **Add a `Procfile`** in `backend/`:
+   ```
+   web: uvicorn main:app --host 0.0.0.0 --port $PORT
+   ```
+3. **(Optional) Add a `pyproject.toml`** if not present (for uvicorn, fastapi, etc.)
+
+### **B. Deploy to Railway**
+1. Go to [Railway](https://railway.app/) and sign in.
+2. Click **New Project** → **Deploy from GitHub repo**.
+3. Select your repo and set the root directory to `backend/`.
+4. Railway will auto-detect Python and install from `requirements.txt`.
+5. Set the **Start Command** to:
+   ```
+   uvicorn main:app --host 0.0.0.0 --port $PORT
+   ```
+6. Deploy!  
+   - Note your backend URL (e.g., `https://your-backend.up.railway.app`).
+
+---
+
+## **2. Frontend: Next.js on Vercel**
+
+### **A. Prepare Your Frontend**
+1. In `frontend/`, create a `.env` file:
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend.up.railway.app/api/v1
+   ```
+2. In your frontend code, use `process.env.NEXT_PUBLIC_API_URL` for all API calls.
+
+### **B. Deploy to Vercel**
+1. Go to [Vercel](https://vercel.com/) and sign in.
+2. Click **New Project** → **Import GitHub Repo**.
+3. Set the project root to `frontend/`.
+4. In Vercel dashboard, add the environment variable:
+   - `NEXT_PUBLIC_API_URL=https://your-backend.up.railway.app/api/v1`
+5. Deploy!
+
+---
+
+## **3. Update Your Frontend API Calls**
+
+In your frontend API utility (e.g., `frontend/lib/api.ts`):
+
+```ts
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
+export async function getFSM() {
+  const res = await fetch(`${API_URL}/fsm`);
+  if (!res.ok) throw new Error("Failed to fetch FSM");
+  return res.json();
+}
+
+export async function postFSM(fsm: any) {
+  const res = await fetch(`${API_URL}/fsm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(fsm),
+  });
+  if (!res.ok) throw new Error("Failed to post FSM");
+  return res.json();
+}
+```
+
+---
+
+## **4. CORS on Backend**
+
+Your backend CORS should allow your Vercel domain:
+```python
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://your-vercel-app.vercel.app",
+        "http://localhost:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+---
+
+## **5. Test the Full Flow**
+
+- Deploy backend to Railway, get the public URL.
+- Deploy frontend to Vercel, set the backend URL as an env var.
+- Open your Vercel app and create/view FSMs!
+
+---
+
+## **Would you like:**
+- Example `requirements.txt` and `Procfile`?
+- Example `.env` and API utility for frontend?
+- Help with custom domain or HTTPS?
+
+Let me know if you want the exact files or have any issues during deployment!
