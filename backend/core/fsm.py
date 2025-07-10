@@ -1,26 +1,26 @@
-class FSM:
-    def __init__(self):
-        # Quintuple (x_0, X, X_marked, E, f)
-        # x_0 = initial state
-        pass
+# G := (x_0, X, X_marked, E, f)
 
-    def set_initial_state(self):
-        pass
+# class FSM:
+#     def __init__(self):
+#         pass
 
-    def set_states(self):
-        pass
+#     def set_initial_state(self):
+#         pass
 
-    def set_marked_states(self):
-        pass
+#     def set_states(self):
+#         pass
 
-    def set_events(self):
-        pass
+#     def set_marked_states(self):
+#         pass
 
-    def set_transition_function(self):
-        pass
+#     def set_events(self):
+#         pass
 
-    def run(self):
-        pass
+#     def set_transition_function(self):
+#         pass
+
+#     def run(self):
+#         pass
 
 
 # x_0 = "OFF"
