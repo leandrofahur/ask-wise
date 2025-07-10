@@ -55,16 +55,14 @@ def test_linting_tools_available():
 
         assert ruff is not None
     except ImportError:
-        # This is expected in development if not installed
-        pass
+        print("Ruff is not installed")
 
     try:
         import black
 
         assert black is not None
     except ImportError:
-        # This is expected in development if not installed
-        pass
+        print("Black is not installed")
 
 
 def test_testing_framework():
