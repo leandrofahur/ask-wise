@@ -1,6 +1,6 @@
 # ASK WISE
 
-[![codecov](https://codecov.io/github/leandrofahur/ask-wise/graph/badge.svg?token=YR9K32XX5X)](https://codecov.io/github/leandrofahur/ask-wise)
+[![codecov](https://codecov.io/gh/leandrofahur/ask-wise/branch/main/graph/badge.svg?token=YR9K32XX5X)](https://codecov.io/gh/leandrofahur/ask-wise?branch=main)
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
 [![Project Version](https://img.shields.io/badge/version-0.1.0-green.svg)](https://github.com/ufmg/ask-wise/releases)
 
