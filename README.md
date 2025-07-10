@@ -19,8 +19,20 @@ AskWise combines finite state machine simulation with retrieval-augmented AI usi
 
 
 ## Architecture
-```bash
+
+AskWise is a fullstack modular platform with the following high-level architecture:
+
+- **frontend/**: Next.js app for FSM visualization and user interaction (Mermaid.js)
+- **backend/**: FastAPI server for FSM logic, API, and (optionally) LangChain RAG
+- **Makefile**: Unified developer automation for both frontend and backend
+- **.github/**: CI/CD workflows for linting, testing, and coverage
+
+```
 ask-wise/
+├── frontend/   # Next.js FSM visualizer
+├── backend/    # FastAPI backend (FSM engine, API, RAG)
+├── Makefile    # Unified dev commands
+├── .github/    # CI/CD workflows
 └── README.md
 ```
 
