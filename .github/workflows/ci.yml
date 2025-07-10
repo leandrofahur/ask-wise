@@ -53,7 +53,7 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         slug: leandrofahur/ask-wise
-        directory: ./backend
+        files: ./backend/coverage.xml
 
   backend-lint:
     name: Backend Linting
