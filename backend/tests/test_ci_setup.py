@@ -20,19 +20,30 @@ def test_project_structure():
     """
     Test that essential project files exist.
     """
-    project_root = Path(__file__).parent.parent
+    backend_root = Path(__file__).parent.parent
+    repo_root = backend_root.parent
 
-    # Essential files for CI/CD
-    essential_files = [
+    # Essential files for backend
+    backend_files = [
         "pyproject.toml",
         ".pre-commit-config.yaml",
-        ".github/workflows/ci.yml",
     ]
 
-    for file_path in essential_files:
-        assert (
-            project_root / file_path
-        ).exists(), f"Missing essential file: {file_path}"
+    # Essential files for CI/CD (at repository root)
+    ci_files = [
+        ".github/workflows/ci.yml",
+        ".github/workflows/backend-test.yml",
+        ".github/workflows/backend-lint.yml",
+        ".github/workflows/backend-security.yml",
+    ]
+
+    # Check backend files
+    for file_path in backend_files:
+        assert (backend_root / file_path).exists(), f"Missing backend file: {file_path}"
+
+    # Check CI files at repository root
+    for file_path in ci_files:
+        assert (repo_root / file_path).exists(), f"Missing CI file: {file_path}"
 
 
 def test_linting_tools_available():
