@@ -46,6 +46,7 @@ jobs:
     - name: Run tests with coverage
       working-directory: ./backend
       run: |
+        export PYTHONPATH="${PYTHONPATH}:$(pwd)"
         uv run pytest --cov=core --cov=tests --cov-report=xml --cov-report=term-missing
     
     - name: Upload coverage reports to Codecov
